@@ -1,41 +1,35 @@
-async function makeRequest(code) {
-  let myHeaders = new Headers();
-  myHeaders.append(
-    'Authorization',
-    'Basic MDFmOWMxZmY3MzEyNGE3Mjg0MDJiYTFhODE3YzQ4OWY6MWExOTgwYmIwNTY2NGY1Njg5MjQyMjZlODIwMGI4NjQ=',
-  );
-  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-  myHeaders.append(
-    'Cookie',
-    '__Host-device_id=AQB7PIx_RKbN48G1GturYVuWLxLHoMJAXZYmwFBxdx6qMvoC0CoeRWm7Fe_xqxO28c7I2oRq9Ns28JwryPXjxNe_9YzBJl9jA7I',
-  );
+import { useState, useCallback } from 'react';
 
-  let urlencoded = new URLSearchParams();
-  urlencoded.append('grant_type', 'authorization_code');
-  urlencoded.append('code', `${code}`);
-  urlencoded.append('redirect_uri', 'http://localhost:3000/');
+const useFetch = () => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  let requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: 'follow',
+  const request = useCallback(async (url, options) => {
+    let response;
+    let json;
+    try {
+      setError(null);
+      setLoading(true);
+      response = await fetch(url, options);
+      json = await response.json();
+      if (response.ok === false) throw new Error(json.message);
+    } catch (err) {
+      json = null;
+      setError(err.message);
+    } finally {
+      setData(json);
+      setLoading(false);
+      return { response, json };
+    }
+  }, []);
+
+  return {
+    data,
+    loading,
+    error,
+    request,
   };
+};
 
-  let response;
-  let json;
-  try {
-    response = await fetch(
-      'https://accounts.spotify.com/api/token',
-      requestOptions,
-    );
-    json = await response.json();
-    if (response.ok === false) throw new Error(json.message);
-    window.localStorage.setItem('widetoken', json.access_token);
-    window.localStorage.setItem('wideRefreshToken', json.refresh_token);
-  } catch (err) {
-    json = null;
-  } finally {
-    console.log('json', json);
-  }
-}
+export default useFetch;

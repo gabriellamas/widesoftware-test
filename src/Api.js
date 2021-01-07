@@ -6,7 +6,7 @@ export function API_AUTHORIZE_SPOTIFY() {
   return `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri}&scope=${scopes}&state=34fFs29kd09`;
 }
 
-async function makeRequest(code) {
+export function REQUEST_TOKEN(code) {
   let myHeaders = new Headers();
   myHeaders.append(
     'Authorization',
@@ -23,27 +23,13 @@ async function makeRequest(code) {
   urlencoded.append('code', `${code}`);
   urlencoded.append('redirect_uri', 'http://localhost:3000/');
 
-  let requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: 'follow',
+  return {
+    url: 'https://accounts.spotify.com/api/token',
+    options: {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow',
+    },
   };
-
-  let response;
-  let json;
-  try {
-    response = await fetch(
-      'https://accounts.spotify.com/api/token',
-      requestOptions,
-    );
-    json = await response.json();
-    if (response.ok === false) throw new Error(json.message);
-    window.localStorage.setItem('widetoken', json.access_token);
-    window.localStorage.setItem('wideRefreshToken', json.refresh_token);
-  } catch (err) {
-    json = null;
-  } finally {
-    console.log('json', json);
-  }
 }
