@@ -102,3 +102,52 @@ export function REQUEST_TRACKS_OF_PLAYLIST(token, url) {
     },
   };
 }
+
+export function SEARCH_TRACK(token, trackName) {
+  let myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${token}`);
+
+  return {
+    url: `https://api.spotify.com/v1/search?q=${trackName}&type=track`,
+    options: {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    },
+  };
+}
+
+export function ADD_TRACK_TO_PLAYLIST(token, playlistId, trackUri) {
+  let myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', `Bearer ${token}`);
+
+  return {
+    url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${trackUri}`,
+    options: {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow',
+    },
+  };
+}
+
+export function DELETE_TRACK_FROM_PLAYLIST(token, playlistId, trackUri) {
+  let myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${token}`);
+  myHeaders.append('Content-Type', 'application/json');
+
+  let raw = JSON.stringify({
+    tracks: [{ uri: `${trackUri}` }],
+  });
+
+  return {
+    url: `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    options: {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    },
+  };
+}
