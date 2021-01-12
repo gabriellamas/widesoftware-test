@@ -151,3 +151,44 @@ export function DELETE_TRACK_FROM_PLAYLIST(token, playlistId, trackUri) {
     },
   };
 }
+
+export function CREATE_PLAYLIST(token, userId, playlistName) {
+  let myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', `Bearer ${token}`);
+
+  let raw = JSON.stringify({ name: `${playlistName}` });
+
+  return {
+    url: `https://api.spotify.com/v1/users/${userId}/playlists`,
+    options: {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    },
+  };
+}
+
+export function DELETE_PLAYLIST(token, playlistId) {
+  let myHeaders = new Headers();
+  myHeaders.append('Authorization', `Bearer ${token}`);
+
+  return {
+    url: `https://api.spotify.com/v1/playlists/${playlistId}/followers`,
+    options: {
+      method: 'DELETE',
+      headers: myHeaders,
+      redirect: 'follow',
+    },
+  };
+}
+
+export function GET_WEATHER(lat, long) {
+  return {
+    url: `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=8d7cb7bafc4fc4c20910a589f5647d8d&units=metric`,
+    options: {
+      method: 'GET',
+    },
+  };
+}
