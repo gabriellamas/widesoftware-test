@@ -337,11 +337,16 @@ const App = () => {
     requestWeather,
   ]);
 
-  if (error) return <p>Erro: {error}</p>;
+  if (error)
+    return (
+      <div className="global">
+        <p>Erro: {error}</p>
+      </div>
+    );
   if (loading) return <p>Carregando...</p>;
   if (data)
     return (
-      <>
+      <div className="global">
         {window.localStorage.getItem('wideToken') && (
           <div className="flex-area">
             <p>{userId}</p>
@@ -496,6 +501,7 @@ const App = () => {
         )}
         {data && (
           <button
+            className="btn-add-playlist"
             type="button"
             onClick={() => setModalAddPlaylist(true)}
             style={{ marginTop: '32px' }}
@@ -504,10 +510,10 @@ const App = () => {
           </button>
         )}
         {modalAddWeather && (
-          <div className={`add-playlist-area animation-left`}>
+          <div className={`add-weather-area animation-left`}>
             <button
               className="close-modal"
-              onClick={() => setModalAddPlaylist(false)}
+              onClick={() => setModalAddWeather(false)}
             >
               Fechar
             </button>
@@ -517,6 +523,7 @@ const App = () => {
                 label="Temperatura associada"
                 type="text"
                 name="weather"
+                className="input-weather"
                 {...weatherInputPlaylist}
               />
               <button>Associar</button>
@@ -584,11 +591,11 @@ const App = () => {
             </ul>
           </div>
         )}
-      </>
+      </div>
     );
   else
     return (
-      <>
+      <div className="global">
         <h2>
           Crie playlists e associe a uma temperatura, sempre que estiver no
           clima escolhido, indicaremos a sua playlist
@@ -608,12 +615,12 @@ const App = () => {
               2: Permitir acesso a minha localização
             </button>
           ) : (
-            <button onClick={requestCoords}>
+            <button onClick={requestCoords} className="btn">
               2: Permitir acesso a minha localização
             </button>
           )}
         </div>
-      </>
+      </div>
     );
 };
 

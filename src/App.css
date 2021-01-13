@@ -12,18 +12,21 @@ ul{
   padding:0px;
 }
 button{
-  cursor: pointer;
+  cursor:pointer;
 }
-
 .animation-left{
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translate(0%,0%);
   animation: animeLeft 0.3s forwards;
 }
 @keyframes animeLeft {
-  to {
+  0% {
+    opacity: 0;
+    transform: translate(0%,0%);
+  }
+  100% {
     opacity: 1;
-    transform: initial;
+    transform: translate(-50%,0%);
   }
 }
 
@@ -72,14 +75,16 @@ button{
   transform: translate(-8px,-50%);
 }
 
-.search-music-area, .add-playlist-area{
+.search-music-area, .add-playlist-area,.add-weather-area{
   position: fixed;
   top: 0px;
-  left: 0px;
+  left: 50%;
+  transform: translate(-50%,0);
   height: 100vh;
   width: 100%;
   background: #fff;
   padding:32px;
+  max-width: 600px;
 }
 
 .close-modal{
@@ -109,4 +114,52 @@ button{
   padding:4px 16px 6px 16px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+.btn{
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.4rem;
+  background: #fb1;
+  color: #764701;
+  min-width: 8rem;
+  padding: 0.8rem 1.2rem;
+  box-sizing: border-box;
+  transition: 0.1s;
+}
+
+.btn-add-playlist{
+  background: #fff;
+  border: 2px dashed #000;
+  padding:24px;
+  width:100%;
+  border-radius:8px;
+}
+
+.global{
+  max-width: 600px;
+  width: 100%;
+  margin:0px auto;
+}
+.input-weather{
+  position: relative;
+  overflow: hidden;
+}
+.input-weather:after{
+  content:'°C';
+  position: absolute;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  top: 50%;
+  right: 1px;
+  height: 95%;
+  padding:0px 24px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  background: #f4f4f4;
+  transform: translate(0%,-50%);
 }
